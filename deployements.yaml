@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front-deployment
+  name: cook-we-front-deployment
   namespace: front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: front
+      app: cook-we-front
   template:
     metadata:
       labels:
-        app: front
+        app: cook-we-front
     spec:
       containers:
         - name: front
-          image: your-github-registry-url/front:latest
+          image: ghcr.io/quent36987/cook-we:latest
           ports:
             - containerPort: 80
 ---

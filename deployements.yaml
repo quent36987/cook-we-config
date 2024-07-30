@@ -22,56 +22,71 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: back-deployment
+  name: cook-we-back-deployment
   namespace: back
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: back
+      app: cook-we-back
   template:
     metadata:
       labels:
-        app: back
+        app: cook-we-back
     spec:
       containers:
-        - name: back
-          image: your-github-registry-url/back:latest
+        - name: cook-we-back
+          image: ghcr.io/quent36987/cook-we:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 9001
           env:
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://db-service.db:5432/yourdbname
-            - name: SPRING_DATASOURCE_USERNAME
-              value: yourusername
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: yourpassword
+            - name: PORT
+              value: "9001"
+            - name: BD_URL
+              value: jdbc:postgresql://postgres-service.db:5432/cook-we-bdd
+            - name: BD_USER
+              value: admin
+            - name: BD_PASSWORD
+              value: admin
+            - name: JWT_SECRET
+              value: "======================BezKoder=Spring==========================="
+            - name: JWT_EXPIRATION_MS
+              value: "86400000"
+            - name: JWT_COOKIE_NAME
+              value: bezkoder-jwt
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db-deployment
+  name: postgres-deployment
   namespace: db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: db
+      app: postgres
   template:
     metadata:
       labels:
-        app: db
+        app: postgres
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:12.1-alpine
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_DB
-              value: yourdbname
             - name: POSTGRES_USER
-              value: yourusername
+              value: admin
             - name: POSTGRES_PASSWORD
-              value: yourpassword
+              value: admin
+            - name: POSTGRES_DB
+              value: cook-we-bdd
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 

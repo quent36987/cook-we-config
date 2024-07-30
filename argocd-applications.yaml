@@ -1,56 +1,17 @@
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: front-app
+  name: cook-we-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/your-repo/argocd-config.git'
+    repoURL: 'https://github.com/quent36987/cook-we-config.git'
     targetRevision: HEAD
     path: .
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: front
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: back-app
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/your-repo/argocd-config.git'
-    targetRevision: HEAD
-    path: .
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: back
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: db-app
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/your-repo/argocd-config.git'
-    targetRevision: HEAD
-    path: .
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: db
+    namespace: default
   syncPolicy:
     automated:
       prune: true

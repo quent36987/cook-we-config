@@ -18,6 +18,8 @@ spec:
           image: ghcr.io/quent36987/cook-we:latest
           ports:
             - containerPort: 80
+      imagePullSecrets:
+        - name: ghcr-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,6 +56,8 @@ spec:
               value: "86400000"
             - name: JWT_COOKIE_NAME
               value: bezkoder-jwt
+      imagePullSecrets:
+        - name: ghcr-secret
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: front
-          image: ghcr.io/quent36987/cook-we:latest
+          image: ghcr.io/quent36987/cook-we-app:latest
           ports:
             - containerPort: 80
       imagePullSecrets:

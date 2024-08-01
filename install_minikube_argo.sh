@@ -75,7 +75,7 @@ echo -e "${BLUE}Secret docker-registry pour l'application front créé.${NC}"
 
 # Configuration du port forwarding pour Argo CD
 echo -e "${BLUE}Configuration du port forwarding pour Argo CD...${NC}"
-minikube kubectl -- port-forward svc/argocd-server -n argocd 8080:443 &
+minikube kubectl -- port-forward svc/argocd-server -n argocd --adress 0.0.0.0 8080:443 &
 echo -e "${BLUE}Port forwarding configuré. Vous pouvez accéder à Argo CD à l'adresse https://localhost:8080${NC}"
 
 # Fin du script

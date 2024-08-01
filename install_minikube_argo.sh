@@ -15,7 +15,7 @@ echo -e "${GREEN}Minikube installé.${NC}"
 
 # Démarrage de Minikube
 echo -e "${GREEN}Démarrage de Minikube...${NC}"
-minikube start --driver=docker
+minikube start --driver=docker --docker-opt="--network=host"
 echo -e "${GREEN}Minikube démarré.${NC}"
 
 # Activation de l'addon ingress

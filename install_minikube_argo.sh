@@ -20,26 +20,27 @@ echo "Addon ingress activé."
 
 # Alias kubectl pour utiliser celui de Minikube
 echo "Configuration de l'alias kubectl..."
-alias kubectl="minikube kubectl --"
+echo 'alias kubectl="minikube kubectl --"' >> ~/.bashrc
+source ~/.bashrc
 
 # Création du namespace Argo CD et installation
 echo "Création du namespace Argo CD..."
-kubectl create namespace argocd
+minikube kubectl -- create namespace argocd
 echo "Installation d'Argo CD..."
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+minikube kubectl -- apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Attente de la fin de l'installation
 echo "Attente de la fin de l'installation des pods Argo CD..."
-kubectl wait --for=condition=available --timeout=600s deployment/argocd-server -n argocd
+minikube kubectl -- wait --for=condition=available --timeout=600s deployment/argocd-server -n argocd
 echo "Argo CD installé."
 
 # Affichage des pods dans le namespace argocd
 echo "Affichage des pods dans le namespace argocd..."
-kubectl get pods -n argocd
+minikube kubectl -- get pods -n argocd
 
 # Récupération du mot de passe initial d'Argo CD
 echo "Récupération du mot de passe initial d'Argo CD..."
-ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode)
+ARGOCD_PASSWORD=$(minikube kubectl -- -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode)
 echo "Le mot de passe initial d'Argo CD est : $ARGOCD_PASSWORD"
 
 # Remplacement des tokens par le contenu de ~/.token

@@ -3,60 +3,55 @@
 # Codes de couleur
 BLUE='\033[1;34m'
 GREEN='\033[1;32m'
+RED='\033[1;31m'
 NC='\033[0m' # No Color
 
-# Téléchargement et installation de Minikube
-echo -e "${GREEN}Téléchargement de Minikube...${NC}"
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-echo -e "${GREEN}Installation de Minikube...${NC}"
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
-rm minikube-linux-amd64
-echo -e "${GREEN}Minikube installé.${NC}"
+# Installation de k3s
+echo -e "${GREEN}Installation de k3s...${NC}"
+curl -sfL https://get.k3s.io | sh -
+echo -e "${GREEN}k3s installé.${NC}"
 
-# Démarrage de Minikube
-echo -e "${GREEN}Démarrage de Minikube...${NC}"
-minikube start --driver=docker --docker-opt="--network=host"
-echo -e "${GREEN}Minikube démarré.${NC}"
+# Attente que k3s démarre
+sleep 10
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+# Vérification de l'installation de k3s
+echo -e "${GREEN}Vérification de l'installation de k3s...${NC}"
+kubectl get nodes
 
 # Activation de l'addon ingress
 echo -e "${GREEN}Activation de l'addon ingress...${NC}"
-minikube addons enable ingress -p minikube
-echo -e "${GREEN}Addon ingress activé.${NC}"
-
-# Alias kubectl pour utiliser celui de Minikube
-echo -e "${GREEN}Configuration de l'alias kubectl...${NC}"
-echo 'alias kubectl="minikube kubectl --"' >> ~/.bashrc
-source ~/.bashrc
+kubectl apply -f https://raw.githubusercontent.com/k3s-io/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 # Création du namespace Argo CD et installation
 echo -e "${GREEN}Création du namespace Argo CD...${NC}"
-minikube kubectl -- create namespace argocd
+kubectl create namespace argocd
 echo -e "${GREEN}Installation d'Argo CD...${NC}"
-minikube kubectl -- apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Attente de la fin de l'installation
 echo -e "${GREEN}Attente de la fin de l'installation des pods Argo CD...${NC}"
-minikube kubectl -- wait --for=condition=available --timeout=600s deployment/argocd-server -n argocd
+kubectl wait --for=condition=available --timeout=600s deployment/argocd-server -n argocd
 echo -e "${GREEN}Argo CD installé.${NC}"
 
 # Affichage des pods dans le namespace argocd
 echo -e "${GREEN}Affichage des pods dans le namespace argocd...${NC}"
-minikube kubectl -- get pods -n argocd
+kubectl get pods -n argocd
 
 # Récupération du mot de passe initial d'Argo CD
 echo -e "${GREEN}Récupération du mot de passe initial d'Argo CD...${NC}"
-ARGOCD_PASSWORD=$(minikube kubectl -- -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode)
-echo -e "${GREEN}Le mot de passe initial d'Argo CD est : $ARGOCD_PASSWORD${NC}"
+ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode)
+echo -e "${GREEN}Le mot de passe initial d'Argo CD est : ${RED}$ARGOCD_PASSWORD${NC}"
 
 # Remplacement des tokens par le contenu de ~/.token
 CR_TOKEN=$(cat ~/.token)
 
-minikube kubectl -- create namespace back
-minikube kubectl -- create namespace front
+# Création des namespaces back et front
+kubectl create namespace back
+kubectl create namespace front
 
 # Création du secret docker-registry pour l'application back
 echo -e "${GREEN}Création du secret docker-registry pour l'application back...${NC}"
-minikube kubectl -- create secret docker-registry ghcr-secret \
+kubectl create secret docker-registry ghcr-secret \
 --docker-server=ghcr.io \
 --docker-username=quent36987 \
 --docker-password=$CR_TOKEN \
@@ -66,7 +61,7 @@ echo -e "${GREEN}Secret docker-registry pour l'application back créé.${NC}"
 
 # Création du secret docker-registry pour l'application front
 echo -e "${GREEN}Création du secret docker-registry pour l'application front...${NC}"
-minikube kubectl -- create secret docker-registry ghcr-secret \
+kubectl create secret docker-registry ghcr-secret \
 --docker-server=ghcr.io \
 --docker-username=quent36987 \
 --docker-password=$CR_TOKEN \
@@ -74,10 +69,8 @@ minikube kubectl -- create secret docker-registry ghcr-secret \
 -n front
 echo -e "${GREEN}Secret docker-registry pour l'application front créé.${NC}"
 
-# Configuration du port forwarding pour Argo CD
-echo -e "${GREEN}Configuration du port forwarding pour Argo CD...${NC}"
-minikube kubectl -- port-forward svc/argocd-server -n argocd --address 0.0.0.0 8080:443 &
-echo -e "${GREEN}Port forwarding configuré. Vous pouvez accéder à Argo CD à l'adresse https://localhost:8080${NC}"
+# Apply the application manifests
+kubectl apply -n argocd -f https://github.com/quent36987/cook-we-config/blob/main/argocd-applications.yaml
 
 # Fin du script
 echo -e "${GREEN}Script terminé.${NC}"

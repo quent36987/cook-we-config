@@ -6,7 +6,7 @@ back repo :  https://github.com/quent36987/cook-we
 
 front repo : https://github.com/quent36987/cook-we-app
 
-## Install minikube and argoCD
+## Install k3s and argoCD
 
 ```bash
 echo 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' > .token

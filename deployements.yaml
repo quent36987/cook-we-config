@@ -51,7 +51,7 @@ spec:
             - name: BD_PASSWORD
               value: admin
             - name: JWT_SECRET
-              value: "======================BezKoder=Spring==========================="
+              value: ======================BezKoder=Spring===========================
             - name: JWT_EXPIRATION_MS
               value: "86400000"
             - name: JWT_COOKIE_NAME
@@ -93,4 +93,3 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-pvc
-

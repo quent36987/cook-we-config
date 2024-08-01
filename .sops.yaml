@@ -1,0 +1,6 @@
+creation_rules:
+  - path_regex: .*\.ya?ml
+    encrypted_regex: "value"
+    key_groups:
+      - age:
+          - age1tnfzjnzamsuy6gzzsw6555g493pjdskl0krm2n3nzxt30utrfykqwztxla

@@ -52,10 +52,7 @@ spec:
             - name: BD_USER
               value: admin
             - name: BD_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: secret-back
-                  key: POSTGRES_PASSWORD
+              value: aVRzMEFwYXM4Qy1memUK
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:

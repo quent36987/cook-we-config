@@ -50,7 +50,10 @@ spec:
             - name: BD_URL
               value: jdbc:postgresql://postgres-service:5432/cook-we-bdd
             - name: BD_USER
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_ADMIN
             - name: BD_PASSWORD
               value: aVRzMEFwYXM4Qy1memUK
             - name: JWT_SECRET

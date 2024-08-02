@@ -19,8 +19,8 @@ echo -e "${GREEN}Vérification de l'installation de k3s...${NC}"
 kubectl get nodes
 
 # Activation de l'addon ingress
-echo -e "${GREEN}Activation de l'addon ingress...${NC}"
-kubectl apply -f https://raw.githubusercontent.com/k3s-io/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+#echo -e "${GREEN}Activation de l'addon ingress...${NC}"
+#kubectl apply -f https://raw.githubusercontent.com/k3s-io/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 # Création du namespace Argo CD et installation
 echo -e "${GREEN}Création du namespace Argo CD...${NC}"

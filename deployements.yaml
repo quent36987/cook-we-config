@@ -47,15 +47,18 @@ spec:
                 secretKeyRef:
                   name: secret-back
                   key: PORT
-            - name: BD_URL
+            - name: DB_URL
               value: jdbc:postgresql://postgres-service.back:5432/cook-we-bdd
-            - name: BD_USER
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: secret-back
                   key: POSTGRES_ADMIN
             - name: BD_PASSWORD
-              value: aVRzMEFwYXM4Qy1memUK
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:

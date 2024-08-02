@@ -43,7 +43,10 @@ spec:
             - containerPort: 9001
           env:
             - name: PORT
-              value: "9001"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: PORT
             - name: BD_URL
               value: jdbc:postgresql://postgres-service.db:5432/cook-we-bdd
             - name: BD_USER
@@ -61,11 +64,6 @@ spec:
               value: bezkoder-jwt
             - name: PICTURE_PATH
               value: /var/lib/uploads
-            - name: ADMIN_EMAIL
-              valueFrom:
-                secretKeyRef:
-                  name: secret-back
-                  key: ADMIN_EMAIL
             - name: ADMIN_PASSWORD
               valueFrom:
                   secretKeyRef:

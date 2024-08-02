@@ -70,12 +70,13 @@ kubectl create secret docker-registry ghcr-secret \
 echo -e "${GREEN}Secret docker-registry pour l'application front créé.${NC}"
 
 ## Installation de Helm et du plugin helm-secrets
-#echo -e "${GREEN}Installation de Helm et du plugin helm-secrets...${NC}"
-#curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-#chmod 700 get_helm.sh
-#./get_helm.sh
-#helm plugin install https://github.com/jkroepke/helm-secrets
-#echo -e "${GREEN}Helm et le plugin helm-secrets installés.${NC}"
+echo -e "${GREEN}Installation de Helm et du plugin helm-secrets...${NC}"
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm install my-release sealed-secrets/sealed-secrets
+echo -e "${GREEN}Helm et le plugin helm installés.${NC}"
 
 # Apply the application manifests
 echo -e "${GREEN}Application des manifests des applications...${NC}"

@@ -9,8 +9,6 @@ spec:
     repoURL: 'https://github.com/quent36987/cook-we-config.git'
     targetRevision: HEAD
     path: .
-    plugin:
-      name: sops
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default

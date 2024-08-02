@@ -3,3 +3,4 @@
 .token
 age.key
 tls.key
+.master.yaml

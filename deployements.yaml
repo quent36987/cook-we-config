@@ -43,24 +43,42 @@ spec:
             - containerPort: 9001
           env:
             - name: PORT
-              valueFrom:
-                secretKeyRef:
-                  name: secret-back
-                  key: PORT
+              value: "9001"
             - name: BD_URL
               value: jdbc:postgresql://postgres-service.db:5432/cook-we-bdd
             - name: BD_USER
               value: admin
             - name: BD_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: JWT_SECRET
-              value: ======================BezKoder=Spring===========================
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: JWT_SECRET
             - name: JWT_EXPIRATION_MS
               value: "86400000"
             - name: JWT_COOKIE_NAME
               value: bezkoder-jwt
             - name: PICTURE_PATH
               value: /var/lib/uploads
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: secret-back
+                    key: ADMIN_PASSWORD
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: ADMIN_USERNAME
           volumeMounts:
             - mountPath: /var/lib/uploads
               name: upload-volume
@@ -75,7 +93,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-deployment
-  namespace: db
+  namespace: back
 spec:
   replicas: 1
   selector:
@@ -95,7 +113,10 @@ spec:
             - name: POSTGRES_USER
               value: admin
             - name: POSTGRES_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: cook-we-bdd
           volumeMounts:

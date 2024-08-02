@@ -1,6 +1,6 @@
 creation_rules:
-  - path_regex: .*\.ya?ml
-    encrypted_regex: "value"
+  - path_regex: secrets.yaml
+    encrypted_regex: ^data$
     key_groups:
       - age:
-          - age1tnfzjnzamsuy6gzzsw6555g493pjdskl0krm2n3nzxt30utrfykqwztxla
+          - age1fd9degay8fdlff75zledjgx0j492vh0p7v9hrw5rfg2wc52hdg2qm637c7

@@ -43,7 +43,10 @@ spec:
             - containerPort: 9001
           env:
             - name: PORT
-              value: "9001"
+              valueFrom:
+                secretKeyRef:
+                  name: cook-we-back-secrets
+                  key: PORT
             - name: BD_URL
               value: jdbc:postgresql://postgres-service.db:5432/cook-we-bdd
             - name: BD_USER
@@ -102,3 +105,28 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  template:
+    spec:
+      containers:
+        - name: argocd-server
+          image: argoproj/argocd:v2.0.3
+          volumeMounts:
+            - name: sops-age-key
+              mountPath: /etc/sops/keys
+              readOnly: true
+      volumes:
+        - name: sops-age-key
+          secret:
+            secretName: sops-age-key
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server
+
+

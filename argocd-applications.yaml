@@ -9,6 +9,13 @@ spec:
     repoURL: 'https://github.com/quent36987/cook-we-config.git'
     targetRevision: HEAD
     path: .
+    helm:
+      parameters:
+        - name: secret.port
+          valueFrom:
+            secretKeyRef:
+              name: cook-we-back-secrets
+              key: PORT
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default

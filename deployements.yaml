@@ -56,6 +56,15 @@ spec:
               value: "86400000"
             - name: JWT_COOKIE_NAME
               value: bezkoder-jwt
+            - name: PICTURE_PATH
+              value: /var/lib/uploads
+          volumeMounts:
+            - mountPath: /var/lib/uploads
+              name: upload-volume
+      volumes:
+        - name: upload-volume
+          persistentVolumeClaim:
+            claimName: upload-pvc
       imagePullSecrets:
         - name: ghcr-secret
 ---

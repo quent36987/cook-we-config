@@ -75,7 +75,8 @@ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scrip
 chmod 700 get_helm.sh
 ./get_helm.sh
 helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-helm install my-release sealed-secrets/sealed-secrets
+kubectl create secret tls my-release-sealed-secrets-key --cert=tls.crt --key=tls.key -n kube-system
+helm install my-release sealed-secrets/sealed-secrets --set controller.secretName=my-release-sealed-secrets-key
 echo -e "${GREEN}Helm et le plugin helm installés.${NC}"
 
 # Apply the application manifests

@@ -113,7 +113,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-back
+                  name: secret-db
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: cook-we-bdd

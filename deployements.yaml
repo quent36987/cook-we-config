@@ -52,7 +52,10 @@ spec:
             - name: BD_USER
               value: admin
             - name: BD_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -108,7 +111,10 @@ spec:
             - name: POSTGRES_USER
               value: admin
             - name: POSTGRES_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: cook-we-bdd
           volumeMounts:

@@ -114,7 +114,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: secret-db
-                  key: POSTGRES_PASSWORD
+                  key: BDD_PASSWORD
             - name: POSTGRES_DB
               value: cook-we-bdd
           volumeMounts:

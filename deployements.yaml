@@ -106,27 +106,6 @@ spec:
           persistentVolumeClaim:
             claimName: postgres-pvc
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: argocd-server
-  namespace: argocd
-spec:
-  template:
-    spec:
-      containers:
-        - name: argocd-server
-          image: argoproj/argocd:v2.0.3
-          volumeMounts:
-            - name: sops-age-key
-              mountPath: /etc/sops/keys
-              readOnly: true
-      volumes:
-        - name: sops-age-key
-          secret:
-            secretName: sops-age-key
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-server
+
 
 

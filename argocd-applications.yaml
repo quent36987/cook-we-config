@@ -9,13 +9,8 @@ spec:
     repoURL: 'https://github.com/quent36987/cook-we-config.git'
     targetRevision: HEAD
     path: .
-    helm:
-      parameters:
-        - name: secret.port
-          valueFrom:
-            secretKeyRef:
-              name: cook-we-back-secrets
-              key: PORT
+    plugin:
+      name: argocd-vault-plugin
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default

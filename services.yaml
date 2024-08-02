@@ -41,3 +41,18 @@ spec:
       port: 5432
       targetPort: 5432
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080
+  selector:
+    app.kubernetes.io/name: argocd-server
+

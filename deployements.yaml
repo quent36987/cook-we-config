@@ -54,7 +54,7 @@ spec:
                 secretKeyRef:
                   name: secret-back
                   key: POSTGRES_ADMIN
-            - name: BD_PASSWORD
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-back

@@ -91,7 +91,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-deployment
-  namespace: db
+  namespace: back
 spec:
   replicas: 1
   selector:
@@ -113,8 +113,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-db
-                  key: BDD_PASSWORD
+                  name: secret-back
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: cook-we-bdd
           volumeMounts:

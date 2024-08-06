@@ -70,6 +70,11 @@ spec:
               value: bezkoder-jwt
             - name: PICTURE_PATH
               value: /var/lib/uploads
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: API_KEY
             - name: ADMIN_PASSWORD
               valueFrom:
                   secretKeyRef:

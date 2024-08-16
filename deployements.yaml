@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: front
-          image: ghcr.io/quent36987/cook-we-app:1.0.0
+          image: ghcr.io/quent36987/cook-we-app:1.1.1
           ports:
             - containerPort: 80
       imagePullSecrets:
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
         - name: cook-we-back
-          image: ghcr.io/quent36987/cook-we:1.0.0
+          image: ghcr.io/quent36987/cook-we:1.1.1
           ports:
             - containerPort: 9001
           env:
@@ -80,6 +80,11 @@ spec:
                   secretKeyRef:
                     name: secret-back
                     key: ADMIN_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-back
+                  key: MAIL_PASSWORD
             - name: ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
